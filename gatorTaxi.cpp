@@ -1,3 +1,8 @@
+// {
+//     Created by: Chintan Acharya,
+//     Date: 6 April 2023
+// }
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -6,10 +11,10 @@
 
 using namespace std;
 
-// A ride is identified by the following triplet:
-// rideNumber: unique integer identifier for each ride.
-// rideCost: The estimated cost (in integer dollars) for the ride.
-// tripDuration: the total time (in integer minutes) needed to get from pickup to destination.
+// A RIDE IS INDENTIFIED BY THE FOLLOWING TRIPLET:
+// rideNumber: UNIQUE INTEGER IDENTIFIER FOR EACH RIDE
+// rideCost: THE ESTIMATED COST (IN INTEGER DOLLARS) FOR THE RIDE
+// tripDuration: THE TOTAL TIME (IN INTEGER MINUTES) NEEDED TO GET FROM PICKIP TO DESTINATION
 struct Ride
 {
     int rideNumber;
@@ -37,9 +42,11 @@ public:
     MinHeap heap_;
     ofstream myfile;
 
+    // INSERTS INTO THE RB-TREE AND MINHEAP.
+    // ALSO CHECKS FOR DUPLICATE RIDE NUMBER
     bool Insert(int rideNumber, int rideCost, int tripDuration)
     {
-        // Create a new ride and add it to both the min-heap and RBT
+        // CREATE A NEW RIDE AND ADD IT TO BOTH THE MIN-HEAP AND RBT
         auto it = rbt_.searchTree(rideNumber);
         if (it->rideNumber == 0)
         {
@@ -58,6 +65,7 @@ public:
         }
     }
 
+    // CANCEL RIDE - DELETES NODES FROM BOTH DATA STRUCTURES
     void CancelRide(int rideNumber)
     {
         bool found = false;
@@ -79,6 +87,7 @@ public:
         }
     }
 
+    // UPDATES TRIP DURATION
     void UpdateTrip(int rideNumber, int newTripDuration)
     {
 
@@ -97,12 +106,12 @@ public:
             Ride ride = mp[rideNumber];
             if (newTripDuration > 2 * ride.tripDuration)
             {
-                // If the new trip duration is more than double the existing duration, cancel the ride
+                // IF THE NEW TRIP IS MORE THAN DOUBLE THE EXISTING DURATION, CANCEL THE RIDE
                 CancelRide(rideNumber);
             }
             else if (newTripDuration > ride.tripDuration)
             {
-                // If the new trip duration is more than the existing duration but less than double, update the ride
+                // IF THE NEW TRIP IS MORE THAN EXISTING DURATION BUT LESS THAN DOUBLE, UPDATE THE RIDE WITH RIDE COST PENALTY
                 int newRideCost = ride.rideCost + 10;
                 MinHeapNode mh = MinHeapNode(rideNumber, newRideCost, newTripDuration);
                 heap_.deleteHeapNode(rideNumber);
@@ -119,6 +128,7 @@ public:
         }
     }
 
+    // PRINT SINGLE RIDE
     void Print(int rideNumber)
     {
         auto it = rbt_.searchTree(rideNumber);
@@ -132,6 +142,7 @@ public:
         }
     }
 
+    // PRINT RIDES BETWEEN RANGE RIDENUMBER1 AND RIDENUMBER2
     void Print(int rideNumber1, int rideNumber2)
     {
         vector<NodePtr> rides = rbt_.rangeSearch(rideNumber1, rideNumber2);
@@ -151,31 +162,18 @@ public:
         myfile << endl;
     }
 
+    // GETS THE RIDE WITH THE SMALLEST RIDE COST
+    // USES MIN-HEAP ATTRIBUTES
     void GetNextRide()
     {
         int min = INT_MAX;
         Ride minRide;
         if (ride_to_node_.size() > 0)
         {
-
-            for (int i = 0; i < ride_to_node_.size(); i++)
-            {
-                if (mp[ride_to_node_[i]].rideCost < min)
-                {
-                    min = mp[ride_to_node_[i]].rideCost;
-                    minRide = mp[ride_to_node_[i]];
-                }
-                else if (mp[ride_to_node_[i]].rideCost == min)
-                {
-                    if (minRide.tripDuration > mp[ride_to_node_[i]].tripDuration)
-                    {
-                        minRide = mp[ride_to_node_[i]];
-                    }
-                }
-            }
-            myfile << "(" << minRide.rideNumber << ", " << minRide.rideCost << ", " << minRide.tripDuration << ")" << endl;
-            mp.erase(minRide.rideNumber);
-            CancelRide(minRide.rideNumber);
+            MinHeapNode min = heap_.getMin();
+            myfile << "(" << min.rideNumber << ", " << min.rideCost << ", " << min.tripDuration << ")" << endl;
+            mp.erase(min.rideNumber);
+            CancelRide(min.rideNumber);
         }
         else
         {

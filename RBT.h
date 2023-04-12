@@ -1,3 +1,8 @@
+// {
+//     Created by: Chintan Acharya,
+//     Date: 5 April 2023
+// }
+
 #include <iostream>
 
 using namespace std;
@@ -5,22 +10,11 @@ using namespace std;
 // data structure that represents a node in the tree
 struct Node
 {
-    int rideNumber, rideCost, tripDuration; // data
+    int rideNumber, rideCost, tripDuration; // data triplet
     Node *parent;                           // pointer to the parent
     Node *left;                             // pointer to left child
     Node *right;                            // pointer to right child
     int color;                              // 1 -> Red, 0 -> Black
-
-    // Node(int rideNumber, int rideCost, int tripDuration)
-    // {
-    //     this->rideNumber = rideNumber;
-    //     this->rideCost = rideCost;
-    //     this->tripDuration = tripDuration;
-    //     color = 1;
-    //     left = nullptr;
-    //     right = nullptr;
-    //     parent = nullptr;
-    // }
 };
 
 typedef Node *NodePtr;
