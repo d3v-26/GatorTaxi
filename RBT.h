@@ -1,33 +1,33 @@
 // {
-//     Created by: Chintan Acharya,
-//     Date: 5 April 2023
+//     CREATED BY: CHINTAN ACHARYA
+//     DATE: 5 APRIL 2023
 // }
 
 #include <iostream>
 
 using namespace std;
 
-// data structure that represents a node in the tree
+// DATA STRUCTURE THAT REPRESENTS A NODE IN THE TREE
 struct Node
 {
-    int rideNumber, rideCost, tripDuration; // data triplet
-    Node *parent;                           // pointer to the parent
-    Node *left;                             // pointer to left child
-    Node *right;                            // pointer to right child
-    int color;                              // 1 -> Red, 0 -> Black
+    int rideNumber, rideCost, tripDuration; // DATA TRIPLET
+    Node *parent;                           // POINTER TO THE PARENT
+    Node *left;                             // POINTER TO THE LEFT CHILD
+    Node *right;                            // POINTER TO THE RIGHT CHILD
+    int color;                              // 1 -> RED, 0 -> BLACK
 };
 
 typedef Node *NodePtr;
 
-// class RBTree implements the operations in Red Black Tree
+// IMPLEMENTS THE OPERATIONS OF RED-BLACK TREE
 class RBTree
 {
 private:
     NodePtr root;
     NodePtr TNULL;
 
-    // initializes the nodes with appropirate values
-    // all the pointers are set to point to the null pointer
+    // INTIALIZES THE NODE WITH APPROPRIATE VALUES
+    // ALL THE POINTERS ARE SET TO POINT TO THE NULL POINTER
     void initializeNULLNode(NodePtr node, NodePtr parent)
     {
         node->rideNumber = 0;
@@ -51,7 +51,7 @@ private:
         return searchTreeHelper(node->right, key);
     }
 
-    // fix the rb tree modified by the delete operation
+    // FIX THE RB TREE MODIFIED BY THE DELETE OPERATION
     void fixDelete(NodePtr x)
     {
         NodePtr s;
@@ -62,7 +62,7 @@ private:
                 s = x->parent->right;
                 if (s->color == 1)
                 {
-                    // case 3.1
+                    // CASE 1
                     s->color = 0;
                     x->parent->color = 1;
                     leftRotate(x->parent);
@@ -71,7 +71,7 @@ private:
 
                 if (s->left->color == 0 && s->right->color == 0)
                 {
-                    // case 3.2
+                    // CASE 2
                     s->color = 1;
                     x = x->parent;
                 }
@@ -79,14 +79,14 @@ private:
                 {
                     if (s->right->color == 0)
                     {
-                        // case 3.3
+                        // CASE 3
                         s->left->color = 0;
                         s->color = 1;
                         rightRotate(s);
                         s = x->parent->right;
                     }
 
-                    // case 3.4
+                    // CASE 4
                     s->color = x->parent->color;
                     x->parent->color = 0;
                     s->right->color = 0;
@@ -99,7 +99,7 @@ private:
                 s = x->parent->left;
                 if (s->color == 1)
                 {
-                    // case 3.1
+                    // CASE 1
                     s->color = 0;
                     x->parent->color = 1;
                     rightRotate(x->parent);
@@ -108,7 +108,7 @@ private:
 
                 if (s->right->color == 0 && s->right->color == 0)
                 {
-                    // case 3.2
+                    // CASE 2
                     s->color = 1;
                     x = x->parent;
                 }
@@ -116,14 +116,14 @@ private:
                 {
                     if (s->left->color == 0)
                     {
-                        // case 3.3
+                        // CASE 3
                         s->right->color = 0;
                         s->color = 1;
                         leftRotate(s);
                         s = x->parent->left;
                     }
 
-                    // case 3.4
+                    // CASE 4
                     s->color = x->parent->color;
                     x->parent->color = 0;
                     s->left->color = 0;
@@ -152,6 +152,7 @@ private:
         v->parent = u->parent;
     }
 
+    //  INORDER TRAVERSAL FOR RANGE SEARCH
     void inOrderHelper(NodePtr node, int k1, int k2, vector<NodePtr> &result)
     {
         vector<NodePtr> nodes;
@@ -173,9 +174,9 @@ private:
         }
     }
 
+    // DELETE NODE
     void deleteNodeHelper(NodePtr node, int key)
     {
-        // find the node containing key
         NodePtr z = TNULL;
         NodePtr x, y;
         while (node != TNULL)
@@ -241,7 +242,7 @@ private:
         }
     }
 
-    // fix the red-black tree
+    // FIXING RED BLACK TREE
     void fixInsert(NodePtr k)
     {
         NodePtr u;
@@ -249,10 +250,10 @@ private:
         {
             if (k->parent == k->parent->parent->right)
             {
-                u = k->parent->parent->left; // uncle
+                u = k->parent->parent->left;
                 if (u->color == 1)
                 {
-                    // case 3.1
+                    // CASE 1
                     u->color = 0;
                     k->parent->color = 0;
                     k->parent->parent->color = 1;
@@ -262,11 +263,11 @@ private:
                 {
                     if (k == k->parent->left)
                     {
-                        // case 3.2.2
+                        // CASE 2
                         k = k->parent;
                         rightRotate(k);
                     }
-                    // case 3.2.1
+                    // CASE 2
                     k->parent->color = 0;
                     k->parent->parent->color = 1;
                     leftRotate(k->parent->parent);
@@ -274,11 +275,11 @@ private:
             }
             else
             {
-                u = k->parent->parent->right; // uncle
+                u = k->parent->parent->right;
 
                 if (u->color == 1)
                 {
-                    // mirror case 3.1
+                    // MIRROR CASE 1
                     u->color = 0;
                     k->parent->color = 0;
                     k->parent->parent->color = 1;
@@ -288,11 +289,11 @@ private:
                 {
                     if (k == k->parent->right)
                     {
-                        // mirror case 3.2.2
+                        // MIRROR CASE 2
                         k = k->parent;
                         leftRotate(k);
                     }
-                    // mirror case 3.2.1
+                    // MIRROR CASE 2
                     k->parent->color = 0;
                     k->parent->parent->color = 1;
                     rightRotate(k->parent->parent);
@@ -306,31 +307,6 @@ private:
         root->color = 0;
     }
 
-    void printHelper(NodePtr root, string indent, bool last)
-    {
-        // print the tree structure on the screen
-        if (root != TNULL)
-        {
-            cout << indent;
-            if (last)
-            {
-                cout << "R----";
-                indent += "     ";
-            }
-            else
-            {
-                cout << "L----";
-                indent += "|    ";
-            }
-
-            string sColor = root->color ? "RED" : "BLACK";
-            cout << root->rideNumber << "(" << sColor << ")" << endl;
-            printHelper(root->left, indent, false);
-            printHelper(root->right, indent, true);
-        }
-        // cout<<root->left->data<<endl;
-    }
-
 public:
     RBTree()
     {
@@ -341,14 +317,14 @@ public:
         root = TNULL;
     }
 
-    // search the tree for the key k
-    // and return the corresponding node
+    // SEARCH THE TREE FOR THE KEY K
+    // AND RETURN THE CORRESPONDING NODE
     NodePtr searchTree(int k)
     {
         return searchTreeHelper(this->root, k);
     }
 
-    // find the node with the minimum key
+    // FIND THE NODE WITH MINIMUM KEY
     NodePtr minimum(NodePtr node)
     {
         while (node->left != TNULL)
@@ -358,7 +334,7 @@ public:
         return node;
     }
 
-    // find the node with the maximum key
+    // FIND THE NODE WITH MAXIMUM KEY
     NodePtr maximum(NodePtr node)
     {
         while (node->right != TNULL)
@@ -368,19 +344,13 @@ public:
         return node;
     }
 
-    // find the successor of a given node
+    // FIND THE SUCCESSOR FOR THE NODE
     NodePtr successor(NodePtr x)
     {
-        // if the right subtree is not null,
-        // the successor is the leftmost node in the
-        // right subtree
         if (x->right != TNULL)
         {
             return minimum(x->right);
         }
-
-        // else it is the lowest ancestor of x whose
-        // left child is also an ancestor of x.
         NodePtr y = x->parent;
         while (y != TNULL && x == y->right)
         {
@@ -390,12 +360,9 @@ public:
         return y;
     }
 
-    // find the predecessor of a given node
+    // FIND THE PREDECESSOR FOR THE NODE
     NodePtr predecessor(NodePtr x)
     {
-        // if the left subtree is not null,
-        // the predecessor is the rightmost node in the
-        // left subtree
         if (x->left != TNULL)
         {
             return maximum(x->left);
@@ -411,7 +378,7 @@ public:
         return y;
     }
 
-    // rotate left at node x
+    // LEFT ROTATE NODE
     void leftRotate(NodePtr x)
     {
         NodePtr y = x->right;
@@ -437,7 +404,7 @@ public:
         x->parent = y;
     }
 
-    // rotate right at node x
+    // RIGHT ROTATE NODE
     void rightRotate(NodePtr x)
     {
         NodePtr y = x->left;
@@ -470,11 +437,10 @@ public:
         return result;
     }
 
-    // insert the key to the tree in its appropriate position
-    // and fix the tree
+    // INSERT THR KEY TO THE TREE IN ITS CORRECT POSITION
+    // AND FIX THE TREE
     NodePtr insert(int rideNumber, int rideCost, int tripDuration)
     {
-        // Ordinary Binary Search Insertion
         NodePtr node = new Node;
         node->parent = nullptr;
         node->rideNumber = rideNumber;
@@ -482,7 +448,7 @@ public:
         node->tripDuration = tripDuration;
         node->left = TNULL;
         node->right = TNULL;
-        node->color = 1; // new node must be red
+        node->color = 1; // NEW NODE IS ALWAYS RED
 
         NodePtr y = nullptr;
         NodePtr x = this->root;
@@ -500,7 +466,6 @@ public:
             }
         }
 
-        // y is parent of x
         node->parent = y;
         if (y == nullptr)
         {
@@ -515,20 +480,18 @@ public:
             y->right = node;
         }
 
-        // if new node is a root node, simply return
         if (node->parent == nullptr)
         {
             node->color = 0;
             return nullptr;
         }
 
-        // if the grandparent is null, simply return
         if (node->parent->parent == nullptr)
         {
             return nullptr;
         }
 
-        // Fix the tree
+        // FIX THE TREE
         fixInsert(node);
         return node;
     }
@@ -538,21 +501,9 @@ public:
         return this->root;
     }
 
-    // delete the node from the tree
+    // DELETE THE NODE FROM THE TREE
     void deleteNode(int data)
     {
         deleteNodeHelper(this->root, data);
-    }
-
-    // print the tree structure on the screen
-    void prettyPrint()
-    {
-        if (root)
-        {
-            printHelper(this->root, "", true);
-        }
-    }
-    void main()
-    {
     }
 };

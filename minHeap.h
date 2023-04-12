@@ -1,12 +1,13 @@
 // {
-//     Created by: Chintan Acharya,
-//     Date: 5 April 2023
+//     CREATED BY: CHINTAN ACHARYA
+//     DATE: 6 APRIL 2023
 // }
 
 #include <vector>
 
 using namespace std;
 
+// STORES THE DATA OF THE HEAP NODE
 class MinHeapNode
 {
 public:
@@ -18,6 +19,7 @@ public:
 
 class MinHeap
 {
+    // DEFINING THE BASIC HEAP FUNCTIONS
 private:
     vector<MinHeapNode> heap;
     int left(int i) { return 2 * i + 1; }
@@ -31,6 +33,7 @@ private:
     }
 
 public:
+    // INSERTS INTO HEAP
     void insert(MinHeapNode &node)
     {
         heap.push_back(node);
@@ -42,6 +45,8 @@ public:
             i = parent(i);
         }
     }
+
+    // EXTRACT MIN FROM THE HEAP
     MinHeapNode extractMin()
     {
         MinHeapNode root = heap[0];
@@ -67,15 +72,20 @@ public:
         }
         return root;
     }
+
+    // RETURNS THE MIN NODE
     MinHeapNode getMin()
     {
         return heap[0];
     }
+
+    // RETURNS IS EMPTY
     bool isEmpty()
     {
         return heap.size() == 0;
     }
 
+    // DELETE HEAP NODE BY RIDENUMBER
     void deleteHeapNode(int rideNumber)
     {
         int index = -1;
@@ -117,8 +127,5 @@ public:
             swap(heap[i], heap[j]);
             i = j;
         }
-    }
-    void main()
-    {
     }
 };
